@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb+srv://whiteboard_user:white123@cluster0.d8h1vhe.mongodb.net/WhiteboardDB
+    # Backend එක වෙනස් කරන කොට auto update වෙන්න (optional)
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true # React terminal එක openව තියාගන්න
+    environment:
+      - WDS_SOCKET_PORT=0 # Webpack error එක වළක්වන්න
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
